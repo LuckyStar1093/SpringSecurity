@@ -10,25 +10,39 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class ProjectSecurityConfig {
 
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain1(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((requests) -> requests.requestMatchers("/myAccounts",
+                        "/myBalance",
+                        "/myLoan","/myCard").
+                authenticated()
+                .requestMatchers("/welcome","/notices","/contact").permitAll()
+        );
+        http.formLogin(withDefaults());
+        http.httpBasic(withDefaults());
+        return http.build();
+    }
+
+
+/*    Deny All Method   */
+
 //    @Bean
-//    SecurityFilterChain defaultSecurityFilterChain1(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests((requests) -> requests.requestMatchers("myAccounts",
-//                        "myBalance",
-//                        "myLoans").
-//                authenticated()
-//                .requestMatchers("/welcome").permitAll()
+//    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests((requests) -> requests.anyRequest().denyAll()
 //        );
 //        http.formLogin(withDefaults());
 //        http.httpBasic(withDefaults());
 //        return http.build();
 //    }
 
-    @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> requests.anyRequest().denyAll()
-        );
+    /*    Permit All Method   */
+
+//    @Bean
+//    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll()
+//        );
 //        http.formLogin(withDefaults());
 //        http.httpBasic(withDefaults());
-        return http.build();
-    }
+//        return http.build();
+//    }
 }
